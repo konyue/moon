@@ -4,7 +4,7 @@ port: 8080
 
 log:
   level: "debug"
-  filename: "web_app.log"
+  filename: "moon.log"
   max_size: 200
   max_age: 30
   max_backups: 7
@@ -13,7 +13,7 @@ mysql:
   port: 3306
   user: "root"
   password: "123456"
-  dbname: "test"
+  dbname: "moon"
 redis:
   host: "127.0.0.1"
   port: 6379
