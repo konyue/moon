@@ -8,6 +8,7 @@ import (
 	"moon/dao/mysql"
 	"moon/dao/redis"
 	"moon/logger"
+	"moon/pkg/snowflake"
 	"moon/routes"
 	"moon/settings"
 	"net/http"
@@ -19,17 +20,17 @@ import (
 
 // Go web 脚手架模板
 func main() {
-	// 1. 加载配置
+	//  加载配置
 	if err := settings.Init(); err != nil {
 		fmt.Printf("init settings failed, err:%v\n", err)
 	}
-	// 2. 初始化配置
+	//  初始化配置
 	if err := logger.Init(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("init logger failed,err:%v\n", err)
 	}
 	defer zap.L().Sync()
 	zap.L().Debug("log init success...")
-	// 3. 初始化mysql连接
+	//  初始化mysql连接
 	if err := mysql.Init(settings.Conf.MySQLConfig); err != nil {
 		fmt.Printf("init mysql failed,err:%v\n", err)
 	}
@@ -38,9 +39,14 @@ func main() {
 		fmt.Printf("init redis failed,err:%v\n", err)
 	}
 	defer redis.Close()
-	// 5. 注册路由
+
+	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachineID); err != nil {
+		fmt.Printf("init snowflake failed,err:%v\n", err)
+	}
+
+	//  注册路由
 	r := routes.Setup()
-	// 6. 启动服务（优雅关机）
+	//  启动服务（优雅关机）
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", settings.Conf.Port),
 		Handler: r,

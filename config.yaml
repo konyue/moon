@@ -1,7 +1,8 @@
 name: "web_app"
 mode: "dev"
 port: 8080
-
+start_time: "2022-05-29"
+machine_id: 1
 log:
   level: "debug"
   filename: "moon.log"
