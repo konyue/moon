@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"log"
+	"moon/controller"
 	"moon/dao/mysql"
 	"moon/dao/redis"
 	"moon/logger"
@@ -40,8 +41,14 @@ func main() {
 	}
 	defer redis.Close()
 
+	//初始化snowflake id生成器
 	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachineID); err != nil {
 		fmt.Printf("init snowflake failed,err:%v\n", err)
+	}
+
+	// 初始化gin框架内置校验器使用的翻译器
+	if err := controller.InitTrans("zh"); err != nil {
+		fmt.Printf("init validator trans failed,err:%v\n", err)
 	}
 
 	//  注册路由
