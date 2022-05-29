@@ -10,7 +10,7 @@ var Conf = new(AppConfig)
 
 type AppConfig struct {
 	Name         string `mapstructure:"name"`
-	Mode         string `mapstructure:"dev"`
+	Mode         string `mapstructure:"mode"`
 	StartTime    string `mapstructure:"start_time"`
 	MachineID    int64  `mapstructure:"machine_id"`
 	Port         int    `mapstructure:"port"`

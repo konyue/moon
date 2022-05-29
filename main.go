@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("init settings failed, err:%v\n", err)
 	}
 	//  初始化配置
-	if err := logger.Init(settings.Conf.LogConfig); err != nil {
+	if err := logger.Init(settings.Conf.LogConfig, settings.Conf.Mode); err != nil {
 		fmt.Printf("init logger failed,err:%v\n", err)
 	}
 	defer zap.L().Sync()
