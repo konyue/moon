@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"moon/controller"
 	"moon/logger"
+	"moon/middlewares"
 	"net/http"
 )
 
@@ -18,8 +19,15 @@ func Setup(mode string) *gin.Engine {
 	r.POST("/signup", controller.SignUpHandler)
 	// 登录业务路由
 	r.POST("/login", controller.LoginHandler)
-	r.GET("/", func(c *gin.Context) {
+
+	r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
+	})
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": "404",
+		})
 	})
 	return r
 }

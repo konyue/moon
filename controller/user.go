@@ -60,7 +60,10 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	// 业务处理
-	if err := logic.Login(p); err != nil {
+	token, err := logic.Login(p)
+	//println(token, err, "ddd ~!~~~")
+	if err != nil {
+
 		zap.L().Error("login.Login failed", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserNotExist) {
 			ResponseError(c, CodeUserNotExist)
@@ -69,6 +72,7 @@ func LoginHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidPassword)
 		return
 	}
+
 	// 返回响应
-	ResponseSuccess(c, nil)
+	ResponseSuccess(c, token)
 }

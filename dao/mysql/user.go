@@ -65,5 +65,6 @@ func Login(user *models.User) (err error) {
 	if password != user.Password {
 		return ErrorInvalidPassword
 	}
+	//println(password, user.Password)
 	return
 }
