@@ -3,6 +3,8 @@ mode: "dev"
 port: 8080
 start_time: "2022-05-29"
 machine_id: 1
+auth:
+  jwt_expire: 8760
 log:
   level: "debug"
   filename: "moon.log"
