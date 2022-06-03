@@ -7,17 +7,10 @@ import (
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
-	"errors"
 	"moon/models"
 )
 
 const secret = "konyue.com"
-
-var (
-	ErrorUserExist       = errors.New("用户已存在")
-	ErrorUserNotExist    = errors.New("用户不存在")
-	ErrorInvalidPassword = errors.New("用户名或密码错误")
-)
 
 // CheckUserExist 通过用户名查重
 func CheckUserExist(username string) (err error) {
