@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// Post 帖子
 type Post struct {
 	ID          int64     `json:"id" db:"post_id"`
 	AuthorId    int64     `json:"author_id" db:"author_id" `
@@ -10,4 +11,11 @@ type Post struct {
 	Title       string    `json:"title" db:"title" binding:"required"`
 	Content     string    `json:"content" db:"content"`
 	CreateTime  time.Time `json:"create_time" db:"create_time"`
+}
+
+// ApiPostDetail 帖子详情接口
+type ApiPostDetail struct {
+	AuthorName       string             `json:"author_name"`
+	*Post                               //帖子
+	*CommunityDetail `json:"community"` //社区
 }
