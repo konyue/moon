@@ -9,6 +9,7 @@ import (
 
 // --- 社区相关的
 
+// CommunityHandler 查询社区列表
 func CommunityHandler(c *gin.Context) {
 	// 查询到所有社区(id,name) 以列表形式返回
 	data, err := logic.GetCommunityList()

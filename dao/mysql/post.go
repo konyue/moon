@@ -2,6 +2,7 @@ package mysql
 
 import "moon/models"
 
+// CreatePost 创建帖子
 func CreatePost(p *models.Post) (err error) {
 	sqlStr := `insert into post(
 	post_id,title,content,author_id,community_id)
@@ -12,6 +13,7 @@ func CreatePost(p *models.Post) (err error) {
 
 }
 
+// GetPostById 根据帖子id获取帖子详情
 func GetPostById(pid int64) (post *models.Post, err error) {
 	post = new(models.Post)
 	sqlStr := `select 

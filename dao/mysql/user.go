@@ -25,7 +25,7 @@ func CheckUserExist(username string) (err error) {
 	return
 }
 
-// InsertUser  向数据库中年插入新的用户记录
+// InsertUser  向数据库中插入新的用户记录
 func InsertUser(user *models.User) (err error) {
 	// 密码进行加密
 	user.Password = encryptPassword(user.Password)
@@ -42,6 +42,7 @@ func encryptPassword(oPassword string) string {
 	return hex.EncodeToString(h.Sum([]byte(oPassword)))
 }
 
+// Login 用户登录
 func Login(user *models.User) (err error) {
 	oPassword := user.Password
 	sqlStr := `select user_id,username,password from user where username=?`

@@ -22,12 +22,15 @@ func Setup(mode string) *gin.Engine {
 	v1.POST("/login", controller.LoginHandler)
 
 	v1.Use(middlewares.JWTAuthMiddleware()) //用中间件
-
 	{
+		// 社区列表查询
 		v1.GET("/community", controller.CommunityHandler)
+		// 社区id查询
 		v1.GET("/community/:id", controller.CommunityDetailHandler)
 
+		// 创建帖子
 		v1.POST("/post", controller.CreatePostHandler)
+		// 根据id查询帖子详情
 		v1.GET("/post/:id", controller.GetPostDetailHandler)
 	}
 

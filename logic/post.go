@@ -7,6 +7,7 @@ import (
 	"moon/pkg/snowflake"
 )
 
+// CreatePost 创建帖子
 func CreatePost(p *models.Post) (err error) {
 	// 生成post id
 	p.ID = snowflake.GenID()
@@ -15,6 +16,7 @@ func CreatePost(p *models.Post) (err error) {
 	//返回
 }
 
+// GetPostById 根据贴子id得到帖子详情
 func GetPostById(pid int64) (data *models.ApiPostDetail, err error) {
 	// 查询并组合接口想用的数据
 	post, err := mysql.GetPostById(pid)
