@@ -34,7 +34,8 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("/posts", controller.GetPostListHandler)
 		// 根据id查询帖子详情
 		v1.GET("/post/:id", controller.GetPostDetailHandler)
-
+		// 投票
+		v1.POST("/vote", controller.PostVoteController)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

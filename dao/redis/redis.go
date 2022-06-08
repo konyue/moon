@@ -6,10 +6,13 @@ import (
 	"moon/settings"
 )
 
-var rdb *redis.Client
+var (
+	client *redis.Client
+	Nil    = redis.Nil
+)
 
 func Init(cfg *settings.RedisConfig) (err error) {
-	rdb := redis.NewClient(&redis.Options{
+	client = redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:%d",
 			cfg.Host,
 			cfg.Port,
@@ -18,7 +21,7 @@ func Init(cfg *settings.RedisConfig) (err error) {
 		DB:       cfg.Dbname,   // 数据库
 		PoolSize: cfg.PoolSize, // 连接池大小
 	})
-	_, err = rdb.Ping().Result()
+	_, err = client.Ping().Result()
 	if err != nil {
 		return err
 	}
@@ -26,5 +29,5 @@ func Init(cfg *settings.RedisConfig) (err error) {
 }
 
 func Close() {
-	_ = rdb.Close()
+	_ = client.Close()
 }
