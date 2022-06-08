@@ -32,7 +32,7 @@ func GetPostById(pid int64) (data *models.ApiPostDetail, err error) {
 			zap.Int64("AuthorId", post.AuthorId), zap.Error(err))
 		return
 	}
-	//根据社区id查询社区详细信息
+	// 根据社区id查询社区详细信息
 	community, err := mysql.GetCommunityDetailByID(post.CommunityID)
 	if err != nil {
 		zap.L().Error("mysql.GetCommunityDetailByID(post.CommunityID) failed",
@@ -43,6 +43,39 @@ func GetPostById(pid int64) (data *models.ApiPostDetail, err error) {
 		AuthorName:      user.Username,
 		Post:            post,
 		CommunityDetail: community,
+	}
+	return
+}
+
+// GetPostList 获取帖子列表
+func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
+	posts, err := mysql.GetPostList(page, size)
+	if err != nil {
+		zap.L().Error("mysql.GetPostList() failed", zap.Error(err))
+		return nil, err
+	}
+	data = make([]*models.ApiPostDetail, 0, len(posts))
+	for _, post := range posts {
+		// 根据作者id查询作者信息
+		user, err := mysql.GetUserById(post.AuthorId)
+		if err != nil {
+			zap.L().Error("mysql.GetUserById(post.AuthorId) failed",
+				zap.Int64("AuthorId", post.AuthorId), zap.Error(err))
+			continue
+		}
+		// 根据社区id查询社区详细信息
+		community, err := mysql.GetCommunityDetailByID(post.CommunityID)
+		if err != nil {
+			zap.L().Error("mysql.GetCommunityDetailByID(post.CommunityID) failed",
+				zap.Int64("community_id", post.CommunityID), zap.Error(err))
+			continue
+		}
+		postDetail := &models.ApiPostDetail{
+			AuthorName:      user.Username,
+			Post:            post,
+			CommunityDetail: community,
+		}
+		data = append(data, postDetail)
 	}
 	return
 }

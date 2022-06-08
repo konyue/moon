@@ -30,7 +30,7 @@ func CommunityDetailHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParma)
 		return
 	}
-	//println("id.. ", id)
+	// println("id.. ", id)
 	// 查询到所有社区(id,name) 以列表形式返回
 	data, err := logic.GetCommunityDetail(id)
 	if err != nil {
