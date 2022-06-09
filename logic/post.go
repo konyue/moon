@@ -102,8 +102,14 @@ func GetPostList2(p *models.ParmaPostList) (data []*models.ApiPostDetail, err er
 	if err != nil {
 		return
 	}
+	// 查询帖子的投票数量
+	voteData, err := redis.GetPostVoteData(ids)
+	if err != nil {
+		return
+	}
+
 	// 查询作者及分区信息填充
-	for _, post := range posts {
+	for idx, post := range posts {
 		// 根据作者id查询作者信息
 		user, err := mysql.GetUserById(post.AuthorId)
 		if err != nil {
@@ -120,6 +126,7 @@ func GetPostList2(p *models.ParmaPostList) (data []*models.ApiPostDetail, err er
 		}
 		postDetail := &models.ApiPostDetail{
 			AuthorName:      user.Username,
+			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 		}

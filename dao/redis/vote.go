@@ -31,6 +31,7 @@ const (
 
 var (
 	ErrVoteTimeExpire = errors.New("投票时间已过")
+	ErrVoteRepeated   = errors.New("不允许重复投票")
 )
 
 func CreatePost(postID int64) error {
@@ -60,6 +61,10 @@ func VoteForPost(userID, postID string, value float64) error {
 
 	// 更新分数
 	oldValue := client.ZScore(getRedisKey(KeyPostVotedZSetPrefix+postID), userID).Val()
+	// 如果这次投票值和原始值保存一致，提示不允许重复投票
+	if oldValue == value {
+		return ErrVoteRepeated
+	}
 	var op float64
 	if value > oldValue {
 		op = 1
