@@ -85,3 +85,45 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 	}
 	return
 }
+
+// GetPostList2 获取帖子列表,通过time或者score
+func GetPostList2(p *models.ParmaPostList) (data []*models.ApiPostDetail, err error) {
+	// 去redis查询id列表
+	ids, err := redis.GetPostIDsInOrder(p)
+	if err != nil {
+		return
+	}
+	if len(ids) == 0 {
+		zap.L().Warn("redis.GetPostIDsInOrder(p) return 0 data")
+		return
+	}
+	// 根据id去mysql中获取详细信息，返回数据按照给定id
+	posts, err := mysql.GetPostListByIDs(ids)
+	if err != nil {
+		return
+	}
+	// 查询作者及分区信息填充
+	for _, post := range posts {
+		// 根据作者id查询作者信息
+		user, err := mysql.GetUserById(post.AuthorId)
+		if err != nil {
+			zap.L().Error("mysql.GetUserById(post.AuthorId) failed",
+				zap.Int64("AuthorId", post.AuthorId), zap.Error(err))
+			continue
+		}
+		// 根据社区id查询社区详细信息
+		community, err := mysql.GetCommunityDetailByID(post.CommunityID)
+		if err != nil {
+			zap.L().Error("mysql.GetCommunityDetailByID(post.CommunityID) failed",
+				zap.Int64("community_id", post.CommunityID), zap.Error(err))
+			continue
+		}
+		postDetail := &models.ApiPostDetail{
+			AuthorName:      user.Username,
+			Post:            post,
+			CommunityDetail: community,
+		}
+		data = append(data, postDetail)
+	}
+	return
+}
