@@ -88,9 +88,8 @@ func GetPostListHandler2(c *gin.Context) {
 		ResponseError(c, CodeInvalidParma)
 		return
 	}
-
 	// 获取数据
-	data, err := logic.GetPostList2(p)
+	data, err := logic.GetPostListNew(p)
 	if err != nil {
 		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
 		ResponseError(c, CodeSererBusy)
