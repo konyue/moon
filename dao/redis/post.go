@@ -54,7 +54,7 @@ func GetPostVoteData(ids []string) (data []int64, err error) {
 }
 
 // GetCommunityPostIDsInOrder 按社区根据查询帖子id
-func GetCommunityPostIDsInOrder(p *models.ParmaCommunityPostList) ([]string, error) {
+func GetCommunityPostIDsInOrder(p *models.ParmaPostList) ([]string, error) {
 	orderKey := getRedisKey(KeyPostTimeZSet)
 	if p.Order == models.OrderScore {
 		orderKey = getRedisKey(KeyPostScoreZSet)

@@ -19,3 +19,6 @@
 
 # log
 *.log
+
+# swagger自动生成的文档
+docs

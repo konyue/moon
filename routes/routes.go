@@ -2,7 +2,10 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	gs "github.com/swaggo/gin-swagger"
 	"moon/controller"
+	_ "moon/docs"
 	"moon/logger"
 	"moon/middlewares"
 	"net/http"
@@ -14,7 +17,7 @@ func Setup(mode string) *gin.Engine {
 	}
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-
+	r.GET("swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	v1 := r.Group("/api/v1")
 	// 注册
 	v1.POST("/signup", controller.SignUpHandler)

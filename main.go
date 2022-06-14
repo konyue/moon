@@ -19,7 +19,20 @@ import (
 	"time"
 )
 
-// Go web 脚手架模板
+// @title moon接口文档
+// @version 1.0
+// @description moon项目接口文档
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name konyue
+// @contact.url https://www.konyue.site
+// @contact.email test@qq.com
+
+// @license.name GPL 3.0
+// @license.url 暂无
+
+// @host 8080
+// @BasePath swagger
 func main() {
 	//  加载配置
 	if err := settings.Init(); err != nil {

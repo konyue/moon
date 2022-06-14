@@ -12,6 +12,15 @@ import (
 )
 
 // SignUpHandler 处理注册请求
+// @Summary 注册接口
+// @Description 处理用户注册请求
+// @Tags 注册相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param object  query models.ParamSignUp false "注册参数"
+// @Security ApiKeyAuth
+// @Success 200
+// @Router /signup [post]
 func SignUpHandler(c *gin.Context) {
 	// 获取参数和参数校验
 	p := new(models.ParamSignUp)
